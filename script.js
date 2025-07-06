@@ -318,31 +318,30 @@ function cekKota() {
   const output = document.getElementById("lokasi-output");
 
   if (!navigator.geolocation) {
-    output.textContent = "Geolocation tidak didukung di browser ini.";
+    output.textContent = "Geolocation tidak didukung.";
     return;
   }
 
   output.textContent = "Sedang mencari lokasi...";
 
   navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
+    async (pos) => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
 
       try {
-        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+        const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=id`);
         const data = await res.json();
+        const kota = data.city || data.locality || data.principalSubdivision;
+        const negara = data.countryName;
 
-        const city = data.address.city || data.address.town || data.address.village || data.address.county;
-        const country = data.address.country;
-
-        output.textContent = `Lokasi Anda: ${city}, ${country}`;
-      } catch (e) {
-        output.textContent = "Gagal mengambil informasi lokasi.";
+        output.textContent = `Lokasi Anda: ${kota}, ${negara}`;
+      } catch {
+        output.textContent = "Gagal mendapatkan nama kota.";
       }
     },
     () => {
-      output.textContent = "Gagal mendapatkan lokasi (mungkin izin ditolak).";
+      output.textContent = "Izin lokasi ditolak atau dibatalkan.";
     }
   );
 }
