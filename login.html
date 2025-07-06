@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Akun</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    .logo-img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .form-box {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      background: #2196F3;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1976D2;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 10px;
+    }
+
+    .link {
+      margin-top: 10px;
+    }
+    .link1 {
+      margin-top: 10px;
+    }
+
+    .link a {
+      color: #2196F3;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo dipindahkan ke sini -->
+  <img src="bludek.png" alt="Logo BlueDek" class="logo-img">
+
+  <div class="form-box">
+    <h2>Login</h2>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button onclick="login()">Masuk</button>
+    
+    <div class="error" id="errorMsg"></div>
+    <div class="link">
+      Belum punya akun? <a href="register.html">Daftar di sini</a>
+    </div>
+    <div class="link">
+    <a href="index.html">Kembali Ke BlueDek Food</a>
+    <p>By continuing to log in to this website, you are agreeing to our Terms of Use and Privacy Policy.</p>
+    </div>
+    </div>
+  </div>
+  <script>
+function login() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const errorMsg = document.getElementById("errorMsg");
+
+  const stored = JSON.parse(localStorage.getItem("userAccount"));
+
+  if (!email || !password) {
+    errorMsg.textContent = "Email dan password harus diisi.";
+    return;
+  }
+
+  // Pindahkan validasi domain ke sini
+  if (
+    !email.endsWith("@gmail.com") &&
+    !email.endsWith("@yahoo.com") &&
+    !email.includes("@outlook.") &&
+    !email.endsWith("@hotmail.com")
+  ) {
+    errorMsg.textContent = "Domain email tidak didukung.";
+    return;
+  }
+
+  if (!stored || stored.email !== email || stored.password !== password) {
+    errorMsg.textContent = "Email atau password salah!";
+    return;
+  }
+
+  // Simpan status login dan alihkan ke index.html
+  localStorage.setItem("isLoggedIn", "true");
+  window.location.href = "index.html";
+}
+  </script>
+
+</body>
+</html>
